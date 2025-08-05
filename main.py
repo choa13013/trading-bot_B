@@ -8,6 +8,10 @@ load_dotenv()
 API_KEY = os.getenv("BINANCE_API_KEY")
 API_SECRET = os.getenv("BINANCE_API_SECRET")
 
+# ✅ Debug temporaire : vérifie que les variables sont bien récupérées
+print("Clé API présente ?", API_KEY is not None)
+print("Clé SECRÈTE présente ?", API_SECRET is not None)
+
 client = Client(API_KEY, API_SECRET)
 
 def should_buy(symbol):
