@@ -2,12 +2,12 @@ import os
 import time
 from binance.client import Client
 
+# ✅ Vérifie que les variables sont présentes
+print("Clé API présente ?", bool(os.getenv("BINANCE_API_KEY")))
+print("Clé SECRÈTE présente ?", bool(os.getenv("BINANCE_API_SECRET")))
+
 API_KEY = os.getenv("BINANCE_API_KEY")
 API_SECRET = os.getenv("BINANCE_API_SECRET")
-
-# ✅ Debug temporaire : vérifie que les variables sont bien récupérées
-print("Clé API présente ?", API_KEY is not None)
-print("Clé SECRÈTE présente ?", API_SECRET is not None)
 
 client = Client(API_KEY, API_SECRET)
 
