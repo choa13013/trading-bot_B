@@ -1,45 +1,5 @@
 import os
-import time
-from binance.client import Client
 
-# ✅ Vérifie que les variables sont présentes
-print("Clé API présente ?", bool(os.getenv("BINANCE_API_KEY")))
-print("Clé SECRÈTE présente ?", bool(os.getenv("BINANCE_API_SECRET")))
-
-API_KEY = os.getenv("BINANCE_API_KEY")
-API_SECRET = os.getenv("BINANCE_API_SECRET")
-
-client = Client(API_KEY, API_SECRET)
-
-def should_buy(symbol):
-    klines = client.get_klines(symbol=symbol, interval=Client.KLINE_INTERVAL_5MINUTE, limit=14)
-    closes = [float(kline[4]) for kline in klines]
-    avg = sum(closes) / len(closes)
-    current_price = closes[-1]
-    return current_price < avg * 0.98
-
-def should_sell(symbol, buy_price):
-    current_price = float(client.get_symbol_ticker(symbol=symbol)["price"])
-    return current_price >= buy_price * 1.02
-
-def run_bot():
-    symbol = "DOGEUSDC"
-    quantity = 5  # En USDC
-    asset = "DOGE"
-    usdc_balance = float(client.get_asset_balance(asset="USDC")["free"])
-
-    if usdc_balance >= quantity and should_buy(symbol):
-        order = client.order_market_buy(symbol=symbol, quoteOrderQty=quantity)
-        buy_price = float(order["fills"][0]["price"])
-        print(f"Achat à {buy_price}")
-
-        while True:
-            if should_sell(symbol, buy_price):
-                asset_balance = float(client.get_asset_balance(asset=asset)["free"])
-                client.order_market_sell(symbol=symbol, quantity=round(asset_balance, 1))
-                print("Vente exécutée")
-                break
-            time.sleep(30)
-
-if __name__ == "__main__":
-    run_bot()
+# Affiche les valeurs brutes
+print("BINANCE_API_KEY =", os.getenv("BINANCE_API_KEY"))
+print("BINANCE_API_SECRET =", os.getenv("BINANCE_API_SECRET"))
